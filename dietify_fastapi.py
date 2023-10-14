@@ -29,7 +29,10 @@ def get_diet_suggestion(message: str):
     )
     return response.choices[0].message.content
 
-@app.post('/suggest_diet')
-def suggest_diet(diet_query: DietQuery):
-    suggestion = get_diet_suggestion(diet_query.message)
+
+from fastapi import Query
+
+@app.get('/suggest_diet')
+def suggest_diet(message: str = Query(..., description="Diet conditions and preferences")):
+    suggestion = get_diet_suggestion(message)
     return {"suggestion": suggestion}
